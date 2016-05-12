@@ -91,7 +91,7 @@ Here are some standard links for getting your machine calibrated:
 
 // Optional custom name for your RepStrap or other custom machine
 // Displayed in the LCD "Ready" message
-#define CUSTOM_MACHINE_NAME "Wilson II"
+#define CUSTOM_MACHINE_NAME "MCBRIDE FDM"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
@@ -234,19 +234,19 @@ Here are some standard links for getting your machine calibrated:
 //    #define  DEFAULT_Kd 51.92
 
 // This set of coefficients acquired with e3d-lite6 (mrice)
-    #define  DEFAULT_Kp 76
-    #define  DEFAULT_Ki 13
-    #define  DEFAULT_Kd 109
+    //#define  DEFAULT_Kp 76
+    //#define  DEFAULT_Ki 13
+    //#define  DEFAULT_Kd 109
+/*
+Classic PID
+Kp: 29.18
+Ki: 2.80
+Kd: 75.90
+*/	
+	#define  DEFAULT_Kp 29.18
+	#define  DEFAULT_Ki 2.80
+	#define  DEFAULT_Kd 75.90
 
-// MakerGear
-//    #define  DEFAULT_Kp 7.0
-//    #define  DEFAULT_Ki 0.1
-//    #define  DEFAULT_Kd 12
-
-// Mendel Parts V9 on 12V
-//    #define  DEFAULT_Kp 63.0
-//    #define  DEFAULT_Ki 2.25
-//    #define  DEFAULT_Kd 440
 #endif // PIDTEMP
 
 //===========================================================================
@@ -276,10 +276,20 @@ Here are some standard links for getting your machine calibrated:
 #ifdef PIDTEMPBED
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-    // mrice values for mk2a bed from autotune
+	#define  DEFAULT_bedKp 450
+	#define  DEFAULT_bedKi 60
+	#define  DEFAULT_bedKd 875
+
+/*// mrice values for mk2a bed from autotune
     #define  DEFAULT_bedKp 441.29
     #define  DEFAULT_bedKi 54.3
     #define  DEFAULT_bedKd 896.54
+RECEIVED:  bias: 217 d: 37 min: 93.85 max: 94.03
+RECEIVED:  Ku: 519.83 Tu: 22.45
+RECEIVED:  Classic PID
+RECEIVED:  Kp: 311.90
+RECEIVED:  Ki: 27.79
+RECEIVED:  Kd: 875.15*/
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from pidautotune
 //    #define  DEFAULT_bedKp 97.1
@@ -428,14 +438,14 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 #ifndef MJRICE_BEDLEVELING_RACK
 #define X_MIN_POS 0
 #else
-#define X_MIN_POS 4
+#define X_MIN_POS 6
 #endif
 
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 200
-#define Y_MAX_POS 300
-#define Z_MAX_POS 200
+#define X_MAX_POS 198
+#define Y_MAX_POS 256
+#define Z_MAX_POS 196
 
 //===========================================================================
 //============================= Filament Runout Sensor ======================
@@ -496,7 +506,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 
   #ifdef AUTO_BED_LEVELING_GRID
 
-    #define LEFT_PROBE_BED_POSITION 15
+    #define LEFT_PROBE_BED_POSITION 20
     #define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 60)
     #define FRONT_PROBE_BED_POSITION 25
     #define BACK_PROBE_BED_POSITION (Y_MAX_POS - 50)
@@ -523,9 +533,9 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   // Offsets to the probe relative to the extruder tip (Hotend - Probe)
   // X and Y offsets must be integers
   #ifdef MJRICE_BEDLEVELING_RACK
-     #define X_PROBE_OFFSET_FROM_EXTRUDER 0     // Probe on: -left  +right
-     #define Y_PROBE_OFFSET_FROM_EXTRUDER 45     // Probe on: -front +behind
-     #define Z_PROBE_OFFSET_FROM_EXTRUDER -11  // -below (always!) 
+     #define X_PROBE_OFFSET_FROM_EXTRUDER -2     // Probe on: -left  +right
+     #define Y_PROBE_OFFSET_FROM_EXTRUDER 35     // Probe on: -front +behind
+     #define Z_PROBE_OFFSET_FROM_EXTRUDER -11.52  // -below (always!) 
      #define Z_RAISE_BEFORE_HOMING 20       // (in mm) Raise Z before homing (G28) for Probe Clearance.
   #else
      // for servo mounted z probe
@@ -538,8 +548,8 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   #define XY_TRAVEL_SPEED (100*60)         // X and Y axis travel speed between probes, in mm/min
 
   #define Z_RAISE_BEFORE_PROBING 20   //How much the extruder will be raised before traveling to the first probing point.
-  #define Z_RAISE_BETWEEN_PROBINGS 5  //How much the extruder will be raised when traveling from between next probing points
-  #define Z_RAISE_AFTER_PROBING 5    //How much the extruder will be raised after the last probing point.
+  #define Z_RAISE_BETWEEN_PROBINGS 5.2  //How much the extruder will be raised when traveling from between next probing points
+  #define Z_RAISE_AFTER_PROBING 5.2    //How much the extruder will be raised after the last probing point.
 
 //   #define Z_PROBE_END_SCRIPT "G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10" //These commands will be executed in the end of G29 routine.
                                                                             //Useful to retract a deployable probe.
@@ -598,7 +608,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
  * MOVEMENT SETTINGS
  */
 
-#define MK7_DEFAULT_STEPS 105
+#define MK7_DEFAULT_STEPS 101 //originally 105
 #define MK8_DEFAULT_STEPS 150
 
 // default settings
@@ -621,11 +631,11 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
  #endif
 #endif
 
-#define DEFAULT_MAX_ACCELERATION      {3000,3000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
+#define DEFAULT_MAX_ACCELERATION      {2600,2600,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration in mm/s^2 for printing moves
+#define DEFAULT_ACCELERATION          2600    // X, Y, Z and E acceleration in mm/s^2 for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  3000   // E acceleration in mm/s^2 for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   2600    // X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
 
 // The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
 #define DEFAULT_XYJERK                10.0    // (mm/sec)
@@ -661,18 +671,18 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 
 #ifdef EEPROM_SETTINGS
   // To disable EEPROM Serial responses and decrease program space by ~1700 byte: comment this out:
-  #define EEPROM_CHITCHAT // please keep turned on if you can.
+  //#define EEPROM_CHITCHAT // please keep turned on if you can.
 #endif
 
 // @section temperature
 
 // Preheat Constants
 #define PLA_PREHEAT_HOTEND_TEMP 180
-#define PLA_PREHEAT_HPB_TEMP 50
+#define PLA_PREHEAT_HPB_TEMP 55
 #define PLA_PREHEAT_FAN_SPEED 0   // Insert Value between 0 and 255
 
 #define ABS_PREHEAT_HOTEND_TEMP 210
-#define ABS_PREHEAT_HPB_TEMP 90
+#define ABS_PREHEAT_HPB_TEMP 100
 #define ABS_PREHEAT_FAN_SPEED 128   // Insert Value between 0 and 255
 
 //==============================LCD and SD support=============================

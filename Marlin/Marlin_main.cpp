@@ -1215,12 +1215,15 @@ static void retract_z_probe()
       float x_before = current_position[X_AXIS];
 
       // raise the z axis a little bit and then move x axis all the way to the right to raise the probe
-      do_blocking_move_to(x_right_stop_pos, current_position[Y_AXIS], current_position[Z_AXIS]+Z_RAISE_BEFORE_PROBING);
+	  //do_blocking_move_to(x_right_stop_pos, current_position[Y_AXIS], current_position[Z_AXIS]+Z_RAISE_BEFORE_PROBING);
+	  //float x_safe_retract =  x_right_stop_pos > X_MAX_POS ? X_MAX_POS : x_right_stop_pos;
+
+      do_blocking_move_to(X_MAX_POS, current_position[Y_AXIS], current_position[Z_AXIS]+Z_RAISE_BEFORE_PROBING);
 
       Z_ProbeState = PROBE_STATE_RETRACTED;
 
-      // put X and Z back where we found them
-      do_blocking_move_to(x_before, current_position[Y_AXIS], current_position[Z_AXIS]-Z_RAISE_BEFORE_PROBING);
+      // put X in the middle and Z back where we found it
+      do_blocking_move_to(X_MAX_LENGTH/2, current_position[Y_AXIS], current_position[Z_AXIS]-Z_RAISE_BEFORE_PROBING);
     }
     #endif
 
