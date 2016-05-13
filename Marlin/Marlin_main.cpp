@@ -474,6 +474,13 @@ void serial_echopair_P(const char *s_P, unsigned long v)
   }
 #endif //!SDSUPPORT
 
+void lo_beep()
+{
+          tone(BEEPER, 1000);
+          delay(100);
+          noTone(BEEPER);
+}
+
 //adds an command to the main command buffer
 //thats really done in a non-safe way.
 //needs overworking someday
@@ -1212,8 +1219,11 @@ static void retract_z_probe()
     #ifdef MJRICE_BEDLEVELING_RACK
     if(Z_ProbeState != PROBE_STATE_RETRACTED) 
     {
+    st_synchronize();
       float x_before = current_position[X_AXIS];
 
+      lo_beep();
+      
       // raise the z axis a little bit and then move x axis all the way to the right to raise the probe
 	  //do_blocking_move_to(x_right_stop_pos, current_position[Y_AXIS], current_position[Z_AXIS]+Z_RAISE_BEFORE_PROBING);
 	  //float x_safe_retract =  x_right_stop_pos > X_MAX_POS ? X_MAX_POS : x_right_stop_pos;
@@ -1234,8 +1244,11 @@ static float probe_pt(float x, float y, float z_before,float z_after)
 {
   // move to right place
   do_blocking_move_to(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS] + z_before); // do the z move first
+
+float xx = x - X_PROBE_OFFSET_FROM_EXTRUDER;
+float yy = y - Y_PROBE_OFFSET_FROM_EXTRUDER;
   
-  do_blocking_move_to(x - X_PROBE_OFFSET_FROM_EXTRUDER, y - Y_PROBE_OFFSET_FROM_EXTRUDER, current_position[Z_AXIS]);
+  do_blocking_move_to(xx, yy, current_position[Z_AXIS]);
 
   #ifndef NO_RETRACT_BETWEEN_PROBINGS
   engage_z_probe();   // Engage Z Servo endstop if available
@@ -1274,9 +1287,15 @@ static void homeaxis(int axis)
     if (axis == X_AXIS) axis_home_dir = x_home_dir(active_extruder);
     #endif
 
+    #ifdef MJRICE_BEDLEVELING_RACK
+    if(axis==Z_AXIS && Z_ProbeState != PROBE_STATE_EXTENDED)
+    {
+      engage_z_probe();
+    }
+    #endif
+
     current_position[axis] = 0;
     sync_plan_position();
-//    plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
 
     // Engage Servo endstop if enabled
     #ifdef SERVO_ENDSTOPS
@@ -1337,7 +1356,7 @@ static void homeaxis(int axis)
     if (servo_endstops[axis] > -1) servos[servo_endstops[axis]].write(servo_endstop_angles[axis * 2 + 1]);
     #endif
 
-    #if defined (ENABLE_AUTO_BED_LEVELING) 
+    #ifdef MJRICE_BEDLEVELING_RACK
     if (axis==Z_AXIS) retract_z_probe();
     #endif
 
@@ -1454,7 +1473,7 @@ void go_home()
 
     #ifdef MJRICE_BEDLEVELING_RACK
     // raise z axis. this movement is not done to deploy the probe, just to make sure we are high enough that it can be.
-    do_blocking_move_to(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS]+Z_RAISE_BEFORE_HOMING);
+    do_blocking_move_to(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS]+20);
     destination[Z_AXIS] = current_position[Z_AXIS];
     #endif
 
@@ -1592,19 +1611,26 @@ void z_probe_leveling()
      }
      
      st_synchronize();
-     // make sure the bed_level_rotation_matrix is identity or the planner will get it incorectly
-     //vector_3 corrected_position = plan_get_position_mm();
-     //corrected_position.debug("position before G29");
+
+     #ifdef NO_RETRACT_BETWEEN_PROBINGS
+     engage_z_probe(); // if we won't extend/retract during each probe point, then extend it now before we start.
+     #endif
+     do_blocking_move_to(LEFT_PROBE_BED_POSITION,FRONT_PROBE_BED_POSITION,current_position[Z_AXIS]);
+
+     // make sure the bed_level_rotation_matrix is identity or the planner will get it incorectly     
      plan_bed_level_matrix.set_to_identity();
+     
      vector_3 uncorrected_position = plan_get_position();
-     //uncorrected_position.debug("position durring G29");
      current_position[X_AXIS] = uncorrected_position.x;
      current_position[Y_AXIS] = uncorrected_position.y;
      current_position[Z_AXIS] = uncorrected_position.z;
      plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+     
      setup_for_endstop_move();
 
      feedrate = homing_feedrate[Z_AXIS];
+
+//     return;
 
      #ifdef AUTO_BED_LEVELING_GRID
        // probe at the points of a lattice grid
@@ -1624,11 +1650,7 @@ void z_probe_leveling()
             int probePointCounter = 0;
             bool zig = true;
             int yProbe,xProbe;
-      
-            #ifdef NO_RETRACT_BETWEEN_PROBINGS
-            engage_z_probe(); // if we won't extend/retract during each probe point, then extend it now before we start.
-            #endif
-            
+                  
             for (yProbe=FRONT_PROBE_BED_POSITION; yProbe <= BACK_PROBE_BED_POSITION; yProbe += yGridSpacing)
             {
               int xInc;
@@ -1659,7 +1681,7 @@ void z_probe_leveling()
                 }
 
                 float measured_z = probe_pt(xProbe, yProbe, z_before,Z_RAISE_AFTER_PROBING);
-                
+//            return;    
                 eqnBVector[probePointCounter] = measured_z;
 
                 eqnAMatrix[probePointCounter + 0*AUTO_BED_LEVELING_GRID_POINTS*AUTO_BED_LEVELING_GRID_POINTS] = xProbe;
@@ -1725,15 +1747,20 @@ void z_probe_leveling()
 
     current_position[Z_AXIS] = z_tmp - real_z + current_position[Z_AXIS];   //The difference is added to current position and sent to planner.
 
+//    current_position[X_AXIS] = 15; //x_tmp;
+    
     plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
     
     #ifdef NO_RETRACT_BETWEEN_PROBINGS
     // first raise the Z up a little so that the probe can move freely
-    do_blocking_move_to(current_position[X_AXIS],current_position[Y_AXIS],current_position[Z_AXIS]+Z_RAISE_AFTER_PROBING);            
+
+          tone(BEEPER, 2000);
+          delay(100);
+          noTone(BEEPER);
+
+    //do_blocking_move_to(current_position[X_AXIS],current_position[Y_AXIS],current_position[Z_AXIS]+Z_RAISE_AFTER_PROBING);            
     retract_z_probe(); // if we didn't retract after each probe point, then do so now that we are done.
     #endif
-
- 
 
     return;
 }
