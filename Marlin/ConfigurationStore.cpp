@@ -353,7 +353,7 @@ void Config_RetrieveSettings()
 
     EEPROM_READ_VAR(i,x_right_stop_pos);
     // sanity check that the stored value is not higher than the length of the axis
-    if(x_right_stop_pos > X_MAX_POS || x_right_stop_pos < (X_MAX_POS/2)) x_right_stop_pos = X_MAX_POS;
+    if(x_right_stop_pos > X_MAX_POS || x_right_stop_pos < (X_MAX_POS/2.0)) x_right_stop_pos = X_MAX_POS;
 
 		calculate_volumetric_multipliers();
 		// Call updatePID (similar to when we have processed M301)

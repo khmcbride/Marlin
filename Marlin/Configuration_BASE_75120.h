@@ -59,15 +59,10 @@ Here are some standard links for getting your machine calibrated:
   #define SERVO_REFRESH_INTERVAL 10000 // ms
 #endif
 
-#ifdef MJRICE_BEDLEVELING_RACK
-#define NO_RETRACT_BETWEEN_PROBINGS
-#undef SERVO_ENDSTOPS
-#endif
-
 // User-specified version info of this build to display in [Pronterface, etc] terminal window during
 // startup. Implementation of an idea by Prof Braino to inform user that any changes made to this
 // build by the user have been successfully uploaded into firmware.
-#define STRING_VERSION "1.0.4-mjr"
+#define STRING_VERSION "1.0.3-mjr"
 #define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
 #define STRING_CONFIG_H_AUTHOR "(mrice, default config)" // Who made the changes.
 
@@ -84,8 +79,7 @@ Here are some standard links for getting your machine calibrated:
 // This enables the serial port associated to the Bluetooth interface
 //#define BTENABLED              // Enable BT interface on AT90USB devices
 
-//#define MOTHERBOARD BOARD_PICA
-
+//#define GT2560
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
@@ -93,11 +87,11 @@ Here are some standard links for getting your machine calibrated:
   #ifdef GT2560
     #define MOTHERBOARD BOARD_ULTIMAKER 
   #endif
-#endif
+  #endif
 
 // Optional custom name for your RepStrap or other custom machine
 // Displayed in the LCD "Ready" message
-#define CUSTOM_MACHINE_NAME "MCBRIDE FDM"
+#define CUSTOM_MACHINE_NAME "Wilson II"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
@@ -240,19 +234,19 @@ Here are some standard links for getting your machine calibrated:
 //    #define  DEFAULT_Kd 51.92
 
 // This set of coefficients acquired with e3d-lite6 (mrice)
-    //#define  DEFAULT_Kp 76
-    //#define  DEFAULT_Ki 13
-    //#define  DEFAULT_Kd 109
-/*
-Classic PID
-Kp: 29.18
-Ki: 2.80
-Kd: 75.90
-*/	
-	#define  DEFAULT_Kp 29.18
-	#define  DEFAULT_Ki 2.80
-	#define  DEFAULT_Kd 75.90
+    #define  DEFAULT_Kp 76
+    #define  DEFAULT_Ki 13
+    #define  DEFAULT_Kd 109
 
+// MakerGear
+//    #define  DEFAULT_Kp 7.0
+//    #define  DEFAULT_Ki 0.1
+//    #define  DEFAULT_Kd 12
+
+// Mendel Parts V9 on 12V
+//    #define  DEFAULT_Kp 63.0
+//    #define  DEFAULT_Ki 2.25
+//    #define  DEFAULT_Kd 440
 #endif // PIDTEMP
 
 //===========================================================================
@@ -282,20 +276,10 @@ Kd: 75.90
 #ifdef PIDTEMPBED
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-	#define  DEFAULT_bedKp 450
-	#define  DEFAULT_bedKi 60
-	#define  DEFAULT_bedKd 875
-
-/*// mrice values for mk2a bed from autotune
+    // mrice values for mk2a bed from autotune
     #define  DEFAULT_bedKp 441.29
     #define  DEFAULT_bedKi 54.3
     #define  DEFAULT_bedKd 896.54
-RECEIVED:  bias: 217 d: 37 min: 93.85 max: 94.03
-RECEIVED:  Ku: 519.83 Tu: 22.45
-RECEIVED:  Classic PID
-RECEIVED:  Kp: 311.90
-RECEIVED:  Ki: 27.79
-RECEIVED:  Kd: 875.15*/
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from pidautotune
 //    #define  DEFAULT_bedKp 97.1
@@ -444,14 +428,14 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 #ifndef MJRICE_BEDLEVELING_RACK
 #define X_MIN_POS 0
 #else
-#define X_MIN_POS 6.0
+#define X_MIN_POS 4
 #endif
 
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 193.0
-#define Y_MAX_POS 256
-#define Z_MAX_POS 196
+#define X_MAX_POS 200
+#define Y_MAX_POS 300
+#define Z_MAX_POS 200
 
 //===========================================================================
 //============================= Filament Runout Sensor ======================
@@ -511,16 +495,13 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   #define AUTO_BED_LEVELING_GRID
 
   #ifdef AUTO_BED_LEVELING_GRID
-    /*#define LEFT_PROBE_BED_POSITION 20
+
+    #define LEFT_PROBE_BED_POSITION 15
     #define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 60)
-    #define FRONT_PROBE_BED_POSITION 25*/
+    #define FRONT_PROBE_BED_POSITION 25
+    #define BACK_PROBE_BED_POSITION (Y_MAX_POS - 50)
 
-    #define LEFT_PROBE_BED_POSITION 15.0
-    #define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 15.0)
-    #define FRONT_PROBE_BED_POSITION 50.0 // 25
-    #define BACK_PROBE_BED_POSITION (Y_MAX_POS - 50.0)
-
-    #define MIN_PROBE_EDGE 10.0 // The probe square sides can be no smaller than this
+    #define MIN_PROBE_EDGE 10 // The probe square sides can be no smaller than this
 
     // Set the number of grid points per dimension
     // You probably don't need more than 3 (squared=9)
@@ -542,10 +523,10 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   // Offsets to the probe relative to the extruder tip (Hotend - Probe)
   // X and Y offsets must be integers
   #ifdef MJRICE_BEDLEVELING_RACK
-     #define X_PROBE_OFFSET_FROM_EXTRUDER -0.3     // Probe on: -left  +right
-     #define Y_PROBE_OFFSET_FROM_EXTRUDER 35.0     // Probe on: -front +behind
-     #define Z_PROBE_OFFSET_FROM_EXTRUDER -11.52  // -below (always!) 
-     #define Z_RAISE_BEFORE_HOMING 10.0       // (in mm) Raise Z before homing (G28) for Probe Clearance.
+     #define X_PROBE_OFFSET_FROM_EXTRUDER 0     // Probe on: -left  +right
+     #define Y_PROBE_OFFSET_FROM_EXTRUDER 45     // Probe on: -front +behind
+     #define Z_PROBE_OFFSET_FROM_EXTRUDER -11  // -below (always!) 
+     #define Z_RAISE_BEFORE_HOMING 20       // (in mm) Raise Z before homing (G28) for Probe Clearance.
   #else
      // for servo mounted z probe
      #define X_PROBE_OFFSET_FROM_EXTRUDER -54     // Probe on: -left  +right
@@ -617,7 +598,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
  * MOVEMENT SETTINGS
  */
 
-#define MK7_DEFAULT_STEPS 101 //originally 105
+#define MK7_DEFAULT_STEPS 105
 #define MK8_DEFAULT_STEPS 150
 
 // default settings
@@ -640,14 +621,14 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
  #endif
 #endif
 
-#define DEFAULT_MAX_ACCELERATION      {2600,2600,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
+#define DEFAULT_MAX_ACCELERATION      {3000,3000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_ACCELERATION          2600    // X, Y, Z and E acceleration in mm/s^2 for printing moves
+#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration in mm/s^2 for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  3000   // E acceleration in mm/s^2 for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   2600    // X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
 
 // The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
-#define DEFAULT_XYJERK                8.0    // (mm/sec)
+#define DEFAULT_XYJERK                10.0    // (mm/sec)
 #define DEFAULT_ZJERK                 0.4     // (mm/sec)
 #define DEFAULT_EJERK                 5.0    // (mm/sec)
 
@@ -687,11 +668,11 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 
 // Preheat Constants
 #define PLA_PREHEAT_HOTEND_TEMP 180
-#define PLA_PREHEAT_HPB_TEMP 55
+#define PLA_PREHEAT_HPB_TEMP 50
 #define PLA_PREHEAT_FAN_SPEED 0   // Insert Value between 0 and 255
 
 #define ABS_PREHEAT_HOTEND_TEMP 210
-#define ABS_PREHEAT_HPB_TEMP 96
+#define ABS_PREHEAT_HPB_TEMP 90
 #define ABS_PREHEAT_FAN_SPEED 128   // Insert Value between 0 and 255
 
 //==============================LCD and SD support=============================
