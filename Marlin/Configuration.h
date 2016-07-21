@@ -449,7 +449,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 193.0
+#define X_MAX_POS 194.0
 #define Y_MAX_POS 256
 #define Z_MAX_POS 196
 
@@ -544,7 +544,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   #ifdef MJRICE_BEDLEVELING_RACK
      #define X_PROBE_OFFSET_FROM_EXTRUDER -0.3     // Probe on: -left  +right
      #define Y_PROBE_OFFSET_FROM_EXTRUDER 35.0     // Probe on: -front +behind
-     #define Z_PROBE_OFFSET_FROM_EXTRUDER -11.52  // -below (always!) 
+     #define Z_PROBE_OFFSET_FROM_EXTRUDER -11.30  // -below (always!) 
      #define Z_RAISE_BEFORE_HOMING 10.0       // (in mm) Raise Z before homing (G28) for Probe Clearance.
   #else
      // for servo mounted z probe
@@ -556,7 +556,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 
   #define XY_TRAVEL_SPEED (100*60)         // X and Y axis travel speed between probes, in mm/min
 
-  #define Z_RAISE_BEFORE_PROBING 20   //How much the extruder will be raised before traveling to the first probing point.
+  #define Z_RAISE_BEFORE_PROBING 12   //How much the extruder will be raised before traveling to the first probing point.
   #define Z_RAISE_BETWEEN_PROBINGS 5  //How much the extruder will be raised when traveling from between next probing points
   #define Z_RAISE_AFTER_PROBING 5    //How much the extruder will be raised after the last probing point.
 
@@ -647,7 +647,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 #define DEFAULT_TRAVEL_ACCELERATION   2600    // X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
 
 // The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
-#define DEFAULT_XYJERK                8.0    // (mm/sec)
+#define DEFAULT_XYJERK                9.0    // (mm/sec)
 #define DEFAULT_ZJERK                 0.4     // (mm/sec)
 #define DEFAULT_EJERK                 5.0    // (mm/sec)
 
