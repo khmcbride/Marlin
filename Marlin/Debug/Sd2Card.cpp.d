@@ -1,0 +1,23 @@
+C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\Sd2Card.cpp.o: \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\Sd2Card.cpp \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\Marlin.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\fastio.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\Configuration.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\boards.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\Configuration_adv.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\thermistortables.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\pins.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/Arduino.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/binary.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/WCharacter.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/WString.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/HardwareSerial.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/USBAPI.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/Arduino.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\variants\mega/pins_arduino.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\MarlinSerial.h \
+ C:\Users\jello\Dropbox\Electronics\Arduino\Arduino.1.7.7\hardware\arduino\avr\cores\arduino/WString.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\Sd2Card.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\SdFatConfig.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\Sd2PinMap.h \
+ C:\Users\jello\AppData\Local\Temp\VMBuilds\Marlin\mega_atmega2560\Debug\SdInfo.h

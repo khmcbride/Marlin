@@ -192,7 +192,7 @@ Here are some standard links for getting your machine calibrated:
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
-#define HEATER_0_MAXTEMP 250
+#define HEATER_0_MAXTEMP 290
 #define HEATER_1_MAXTEMP 275
 #define HEATER_2_MAXTEMP 275
 #define HEATER_3_MAXTEMP 275
@@ -244,14 +244,27 @@ Here are some standard links for getting your machine calibrated:
     //#define  DEFAULT_Ki 13
     //#define  DEFAULT_Kd 109
 /*
-Classic PID
-Kp: 29.18
-Ki: 2.80
-Kd: 75.90
+e3d v6 lite old values
+#define  DEFAULT_Kp 29.18
+#define  DEFAULT_Ki 2.80
+#define  DEFAULT_Kd 75.90
+
+
+Classic PID (without boot)
+READ:  Kp: 19.10
+READ:  Ki: 1.47
+READ:  Kd: 62.19
+
+Classic PID (with boot)
+READ:  Kp: 18.10
+READ:  Ki: 1.36
+READ:  Kd: 60.42
 */	
-	#define  DEFAULT_Kp 29.18
-	#define  DEFAULT_Ki 2.80
-	#define  DEFAULT_Kd 75.90
+
+
+	#define  DEFAULT_Kp 18.1
+	#define  DEFAULT_Ki 1.36
+	#define  DEFAULT_Kd 60.42
 
 #endif // PIDTEMP
 
@@ -450,7 +463,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define X_MAX_POS 194.0
-#define Y_MAX_POS 256
+#define Y_MAX_POS 305//256
 #define Z_MAX_POS 196
 
 //===========================================================================
@@ -517,8 +530,8 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 
     #define LEFT_PROBE_BED_POSITION 15.0
     #define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 15.0)
-    #define FRONT_PROBE_BED_POSITION 50.0 // 25
-    #define BACK_PROBE_BED_POSITION (Y_MAX_POS - 50.0)
+    #define FRONT_PROBE_BED_POSITION 30.0 // 25
+    #define BACK_PROBE_BED_POSITION (Y_MAX_POS - 30.0)
 
     #define MIN_PROBE_EDGE 10.0 // The probe square sides can be no smaller than this
 
@@ -544,7 +557,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   #ifdef MJRICE_BEDLEVELING_RACK
      #define X_PROBE_OFFSET_FROM_EXTRUDER -0.3     // Probe on: -left  +right
      #define Y_PROBE_OFFSET_FROM_EXTRUDER 35.0     // Probe on: -front +behind
-     #define Z_PROBE_OFFSET_FROM_EXTRUDER -11.30  // -below (always!) 
+     #define Z_PROBE_OFFSET_FROM_EXTRUDER -17.4  // -below (always!) 
      #define Z_RAISE_BEFORE_HOMING 10.0       // (in mm) Raise Z before homing (G28) for Probe Clearance.
   #else
      // for servo mounted z probe
@@ -554,10 +567,10 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
      #define Z_RAISE_BEFORE_HOMING 15       // (in mm) Raise Z before homing (G28) for Probe Clearance.
   #endif                                      // Be sure you have this distance over your Z_MAX_POS in case
 
-  #define XY_TRAVEL_SPEED (100*60)         // X and Y axis travel speed between probes, in mm/min
+  #define XY_TRAVEL_SPEED (100*70)         // X and Y axis travel speed between probes, in mm/min
 
-  #define Z_RAISE_BEFORE_PROBING 12   //How much the extruder will be raised before traveling to the first probing point.
-  #define Z_RAISE_BETWEEN_PROBINGS 5  //How much the extruder will be raised when traveling from between next probing points
+  #define Z_RAISE_BEFORE_PROBING 10   //How much the extruder will be raised before traveling to the first probing point.
+  #define Z_RAISE_BETWEEN_PROBINGS 2  //How much the extruder will be raised when traveling from between next probing points
   #define Z_RAISE_AFTER_PROBING 5    //How much the extruder will be raised after the last probing point.
 
 //   #define Z_PROBE_END_SCRIPT "G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10" //These commands will be executed in the end of G29 routine.
@@ -617,7 +630,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
  * MOVEMENT SETTINGS
  */
 
-#define MK7_DEFAULT_STEPS 101 //originally 105
+#define MK7_DEFAULT_STEPS 105.8 //101 //originally 105
 #define MK8_DEFAULT_STEPS 150
 
 // default settings
@@ -629,7 +642,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 #else
  #ifdef WILSON_II_TYPE
   #define HOMING_FEEDRATE              {50*60, 50*60, 4*60, 0}  // set the homing speeds (mm/min)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT  {80,80,400,MK7_DEFAULT_STEPS}  // default steps per unit for Wilson II
+  #define DEFAULT_AXIS_STEPS_PER_UNIT  {80*2,80*2,400,MK7_DEFAULT_STEPS}  // default steps per unit for Wilson II
   #define DEFAULT_MAX_FEEDRATE         {120, 120, 6, 25}    // (mm/sec)
   #define MANUAL_FEEDRATE              {50*60, 50*60, 4*60, 60}  // set the speeds for manual moves (mm/min) from panel
  #else
@@ -642,12 +655,12 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 
 #define DEFAULT_MAX_ACCELERATION      {2600,2600,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for Skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_ACCELERATION          2600    // X, Y, Z and E acceleration in mm/s^2 for printing moves
+#define DEFAULT_ACCELERATION          2400    // X, Y, Z and E acceleration in mm/s^2 for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  3000   // E acceleration in mm/s^2 for retracts
 #define DEFAULT_TRAVEL_ACCELERATION   2600    // X, Y, Z acceleration in mm/s^2 for travel (non printing) moves
 
 // The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
-#define DEFAULT_XYJERK                9.0    // (mm/sec)
+#define DEFAULT_XYJERK                8.0    // (mm/sec)
 #define DEFAULT_ZJERK                 0.4     // (mm/sec)
 #define DEFAULT_EJERK                 5.0    // (mm/sec)
 
@@ -686,13 +699,13 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
 // @section temperature
 
 // Preheat Constants
-#define PLA_PREHEAT_HOTEND_TEMP 180
+#define PLA_PREHEAT_HOTEND_TEMP 60
 #define PLA_PREHEAT_HPB_TEMP 55
 #define PLA_PREHEAT_FAN_SPEED 0   // Insert Value between 0 and 255
 
-#define ABS_PREHEAT_HOTEND_TEMP 210
-#define ABS_PREHEAT_HPB_TEMP 96
-#define ABS_PREHEAT_FAN_SPEED 128   // Insert Value between 0 and 255
+#define ABS_PREHEAT_HOTEND_TEMP 60
+#define ABS_PREHEAT_HPB_TEMP 82
+#define ABS_PREHEAT_FAN_SPEED 0   // Insert Value between 0 and 255
 
 //==============================LCD and SD support=============================
 // @section lcd
