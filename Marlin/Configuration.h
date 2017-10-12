@@ -529,9 +529,11 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
     #define FRONT_PROBE_BED_POSITION 25*/
 
     #define LEFT_PROBE_BED_POSITION 15.0
-    #define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 15.0)
-    #define FRONT_PROBE_BED_POSITION 30.0 // 25
-    #define BACK_PROBE_BED_POSITION (Y_MAX_POS - 30.0)
+    //#define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 15.0)
+	#define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 8.0)
+    #define FRONT_PROBE_BED_POSITION 40.0 //28.0 // 25
+    //#define BACK_PROBE_BED_POSITION (Y_MAX_POS - 30.0)
+	#define BACK_PROBE_BED_POSITION (Y_MAX_POS - 10.0)
 
     #define MIN_PROBE_EDGE 10.0 // The probe square sides can be no smaller than this
 
@@ -557,7 +559,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   #ifdef MJRICE_BEDLEVELING_RACK
      #define X_PROBE_OFFSET_FROM_EXTRUDER -0.3     // Probe on: -left  +right
      #define Y_PROBE_OFFSET_FROM_EXTRUDER 35.0     // Probe on: -front +behind
-     #define Z_PROBE_OFFSET_FROM_EXTRUDER -17.4  // -below (always!) 
+     #define Z_PROBE_OFFSET_FROM_EXTRUDER -17.48  // -below (always!) 
      #define Z_RAISE_BEFORE_HOMING 10.0       // (in mm) Raise Z before homing (G28) for Probe Clearance.
   #else
      // for servo mounted z probe
@@ -570,7 +572,7 @@ const bool Z_PROBE_ENDSTOP_INVERTING = false; // set to true to invert the logic
   #define XY_TRAVEL_SPEED (100*70)         // X and Y axis travel speed between probes, in mm/min
 
   #define Z_RAISE_BEFORE_PROBING 10   //How much the extruder will be raised before traveling to the first probing point.
-  #define Z_RAISE_BETWEEN_PROBINGS 2  //How much the extruder will be raised when traveling from between next probing points
+  #define Z_RAISE_BETWEEN_PROBINGS 4  //How much the extruder will be raised when traveling from between next probing points
   #define Z_RAISE_AFTER_PROBING 5    //How much the extruder will be raised after the last probing point.
 
 //   #define Z_PROBE_END_SCRIPT "G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10" //These commands will be executed in the end of G29 routine.
